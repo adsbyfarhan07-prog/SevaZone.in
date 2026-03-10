@@ -79,11 +79,11 @@ const SUB_MENUS = {
 };
 
 const RECHARGE_DATA = [
-  {sn:"001", mobile:"98765XXXXX", service:"Aadhar Manual Print", amount:"₹50",  status:"Success", date:"07 Mar 2026"},
-  {sn:"002", mobile:"87654XXXXX", service:"PAN Manual",          amount:"₹120", status:"Success", date:"07 Mar 2026"},
-  {sn:"003", mobile:"76543XXXXX", service:"Voter Manual Print",  amount:"₹80",  status:"Pending", date:"06 Mar 2026"},
-  {sn:"004", mobile:"65432XXXXX", service:"NIOS Marksheet",      amount:"₹200", status:"Success", date:"06 Mar 2026"},
-  {sn:"005", mobile:"54321XXXXX", service:"Aadhar Print List",   amount:"₹50",  status:"Failed",  date:"05 Mar 2026"},
+  {sn:"001", mobile:"98765XXXXX", service:"Aadhar Manual Print",  amount:"₹50",  status:"Success", date:"07 Mar 2026"},
+  {sn:"002", mobile:"87654XXXXX", service:"PAN Manual",            amount:"₹120", status:"Success", date:"07 Mar 2026"},
+  {sn:"003", mobile:"76543XXXXX", service:"Voter Manual Print",    amount:"₹80",  status:"Pending", date:"06 Mar 2026"},
+  {sn:"004", mobile:"65432XXXXX", service:"NIOS Marksheet",        amount:"₹200", status:"Success", date:"06 Mar 2026"},
+  {sn:"005", mobile:"54321XXXXX", service:"Aadhar Print List",     amount:"₹50",  status:"Failed",  date:"05 Mar 2026"},
 ];
 
 const INIT_WALLET = [
@@ -122,16 +122,71 @@ export default function SevaZone() {
   const [addAmount, setAddAmount]         = useState("");
   const [qrTimer, setQrTimer]             = useState(600);
   const timerRef = useRef(null);
+  const fileRef  = useRef(null);
   const t = T[lang];
   const accent = "#00C9A7";
 
-  const showToast = (msg, type="success") => { setToast({msg,type}); setTimeout(()=>setToast(null),3000); };
+  const showToast = (msg, type="success") => { setToast({msg,type}); setTimeout(()=>setToast(null),3500); };
+
+  const getUsers = () => { try { return JSON.parse(localStorage.getItem("sz_users")||"[]"); } catch { return []; } };
+  const saveUsers = (u) => { try { localStorage.setItem("sz_users", JSON.stringify(u)); } catch {} };
 
   const handleLogin = () => {
     if (!loginMobile||!loginPass) { showToast(t.fillFields,"error"); return; }
-    if (loginMobile!==DEMO_USER.mobile||loginPass!==DEMO_USER.password) { showToast("❌ "+t.wrongPass,"error"); return; }
+    if (loginMobile===DEMO_USER.mobile && loginPass===DEMO_USER.password) {
+      setLoading(true);
+      setTimeout(()=>{ setLoading(false); setUserName("Demo User"); setUserCity("Alwar"); setWalletBalance(2450); try{sessionStorage.setItem("sz_logged","1");}catch{} setPage("dashboard"); },1200);
+      return;
+    }
+    const users = getUsers();
+    const found = users.find(u=>u.mobile===loginMobile && u.password===loginPass);
+    if (!found) { showToast("❌ "+t.wrongPass,"error"); return; }
     setLoading(true);
-    setTimeout(()=>{ setLoading(false); try{sessionStorage.setItem("sz_logged","1");}catch{} setPage("dashboard"); },1200);
+    setTimeout(()=>{ setLoading(false); setUserName(found.name||"User"); setUserCity(found.city||""); setUserState(found.state||""); setRole(found.role||"retailer"); setWalletBalance(found.wallet||0); try{sessionStorage.setItem("sz_logged","1");}catch{} setPage("dashboard"); },1200);
+  };
+
+  const handleRegister = () => {
+    if (!regName||!regMobile||!regPass||!regConfirm) { showToast(t.fillFields,"error"); return; }
+    if (regMobile.length!==10) { showToast("❌ 10 digit mobile daalo!","error"); return; }
+    if (regPass.length<6) { showToast("❌ Password 6+ characters ka ho!","error"); return; }
+    if (regPass!==regConfirm) { showToast("❌ Passwords match nahi kar rahe!","error"); return; }
+    const users = getUsers();
+    if (users.find(u=>u.mobile===regMobile)||regMobile===DEMO_USER.mobile) { showToast("❌ Mobile already registered hai!","error"); return; }
+    saveUsers([...users, {name:regName,mobile:regMobile,password:regPass,role,city:"",state:"",wallet:0}]);
+    showToast("✅ Account ban gaya! Ab login karo!");
+    setRegName(""); setRegMobile(""); setRegPass(""); setRegConfirm("");
+    setTimeout(()=>setAuthTab("login"),1000);
+  };
+
+  const handleSendOtp = () => {
+    if (!forgotMobile||forgotMobile.length!==10) { showToast("❌ Valid mobile daalo!","error"); return; }
+    const users = getUsers();
+    if (!users.find(u=>u.mobile===forgotMobile) && forgotMobile!==DEMO_USER.mobile) { showToast("❌ Mobile registered nahi hai!","error"); return; }
+    setLoading(true);
+    setTimeout(()=>{
+      setLoading(false);
+      const otp = String(Math.floor(100000+Math.random()*900000));
+      setForgotOtp(otp);
+      setForgotStep("otp");
+      showToast("OTP: "+otp+" (Screen par hai — SMS backend baad mein lagega)","success");
+    },1200);
+  };
+
+  const handleVerifyOtp = () => {
+    if (!enteredOtp) { showToast("❌ OTP daalo!","error"); return; }
+    if (enteredOtp!==forgotOtp) { showToast("❌ Wrong OTP!","error"); return; }
+    setForgotStep("newpass");
+  };
+
+  const handleResetPass = () => {
+    if (!newPass||!newPassConfirm) { showToast(t.fillFields,"error"); return; }
+    if (newPass.length<6) { showToast("❌ Password 6+ characters ka ho!","error"); return; }
+    if (newPass!==newPassConfirm) { showToast("❌ Passwords match nahi!","error"); return; }
+    const users = getUsers();
+    saveUsers(users.map(u=>u.mobile===forgotMobile?{...u,password:newPass}:u));
+    showToast("✅ Password reset ho gaya! Login karo!");
+    setForgotStep("mobile"); setForgotMobile(""); setForgotOtp(""); setEnteredOtp(""); setNewPass(""); setNewPassConfirm("");
+    setTimeout(()=>setAuthTab("login"),1000);
   };
 
   const handleLogout = () => { try{sessionStorage.removeItem("sz_logged");}catch{} setPage("login"); setLoginMobile(""); setLoginPass(""); };
@@ -163,7 +218,6 @@ export default function SevaZone() {
     if(timerRef.current) clearInterval(timerRef.current);
     setAddMoneyStep("success");
   };
-
   const th = {
     bg:        dark?"#0d1f1c":"#f0f7f5",
     card:      dark?"rgba(255,255,255,0.05)":"rgba(255,255,255,0.95)",
@@ -210,6 +264,8 @@ export default function SevaZone() {
     .notif-panel{position:absolute;top:54px;right:0;width:290px;background:${th.cardSolid};border:1px solid ${th.border};border-radius:16px;box-shadow:0 16px 40px rgba(0,0,0,0.2);z-index:300;animation:popIn 0.2s ease;overflow:hidden}
     .support-btn-item{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:12px;cursor:pointer;transition:all 0.2s;text-decoration:none}
     .support-btn-item:hover{background:rgba(0,201,167,0.1)}
+    .divider{display:flex;align-items:center;gap:12px;margin:16px 0}
+    .divider-line{flex:1;height:1px;background:${th.border}}
     .link-btn{background:none;border:none;color:#00C9A7;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif;font-size:13px}
     .blob1{position:absolute;width:450px;height:450px;border-radius:50%;background:radial-gradient(circle,rgba(0,201,167,0.15),transparent 70%);top:-100px;left:-100px;animation:b1 9s ease-in-out infinite}
     .blob2{position:absolute;width:350px;height:350px;border-radius:50%;background:radial-gradient(circle,rgba(0,150,136,0.12),transparent 70%);bottom:-60px;right:-60px;animation:b2 11s ease-in-out infinite}
@@ -234,8 +290,11 @@ export default function SevaZone() {
   const backBtn = (onClick) => (
     <button onClick={onClick} style={{background:`rgba(0,201,167,0.1)`,border:`1px solid ${th.border}`,borderRadius:10,padding:"8px 16px",color:accent,fontWeight:700,cursor:"pointer",fontSize:13,fontFamily:"'Outfit',sans-serif"}}>← Back</button>
   );
+
+  // ── RENDER CONTENT ────────────────────────────
   const renderContent = () => {
 
+    // Sub menu page
     if (activeSubMenu) return (
       <div className="fade-up">
         <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:24}}>
@@ -250,7 +309,7 @@ export default function SevaZone() {
         </div>
       </div>
     );
-
+    // Sub-menu grid helper
     const subGrid = (id, icon, label, color) => (
       <div className="fade-up">
         <h2 style={{color:th.text,fontWeight:900,fontSize:22,marginBottom:20}}>{icon} {label}</h2>
@@ -272,15 +331,16 @@ export default function SevaZone() {
     if (activeMenu==="voter")  return subGrid("voter","🗳️",t.voter,"#845EC2");
     if (activeMenu==="pan")    return subGrid("pan","📋",t.pan,"#FF6B6B");
 
+    // ── DASHBOARD ──────────────────────────────
     if (activeMenu==="dashboard") return (
       <div className="fade-up">
         <h2 style={{color:th.text,fontWeight:900,fontSize:22,marginBottom:20}}>📊 {t.dashboard}</h2>
         <div style={{display:"flex",gap:14,flexWrap:"wrap",marginBottom:22}}>
           {[
-            {label:t.todayEarning,val:"₹1,240", icon:"💰",color:"#00C9A7",bg:dark?"#0d2e28":"#e6fff7"},
-            {label:t.totalTxn,    val:"84",      icon:"📊",color:"#845EC2",bg:dark?"#1e1335":"#f3eeff"},
-            {label:t.walletBal,   val:`₹${walletBalance.toLocaleString("en-IN")}`,icon:"💼",color:"#2196F3",bg:dark?"#0d1e30":"#e8f4fd"},
-            {label:t.monthRevenue,val:"₹18,320", icon:"📈",color:"#F9A826",bg:dark?"#2a1f0a":"#fff8e6"},
+            {label:t.todayEarning, val:"₹1,240",  icon:"💰", color:"#00C9A7", bg:dark?"#0d2e28":"#e6fff7"},
+            {label:t.totalTxn,     val:"84",       icon:"📊", color:"#845EC2", bg:dark?"#1e1335":"#f3eeff"},
+            {label:t.walletBal,    val:`₹${walletBalance.toLocaleString("en-IN")}`, icon:"💼", color:"#2196F3", bg:dark?"#0d1e30":"#e8f4fd"},
+            {label:t.monthRevenue, val:"₹18,320",  icon:"📈", color:"#F9A826", bg:dark?"#2a1f0a":"#fff8e6"},
           ].map((s,i)=>(
             <div key={i} className="stat-card" style={{flex:"1 1 160px",background:s.bg,borderLeft:`4px solid ${s.color}`}}>
               <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
@@ -296,12 +356,12 @@ export default function SevaZone() {
         <h3 style={{color:th.text,fontWeight:800,fontSize:16,marginBottom:14}}>⚡ {t.quickServices}</h3>
         <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(150px,1fr))",gap:12,marginBottom:22}}>
           {[
-            {icon:"🪪",label:t.aadhar, color:"#00C9A7",id:"aadhar"},
-            {icon:"🗳️",label:t.voter,  color:"#845EC2",id:"voter"},
-            {icon:"📋",label:t.pan,    color:"#FF6B6B",id:"pan"},
-            {icon:"📝",label:t.vehicle,color:"#F9A826",id:"marksheet"},
-            {icon:"📄",label:t.ration, color:"#4CAF50",id:"nios"},
-            {icon:"🏠",label:t.dl,     color:"#2196F3",id:"haryana"},
+            {icon:"🪪",label:t.aadhar,  color:"#00C9A7",id:"aadhar"},
+            {icon:"🗳️",label:t.voter,   color:"#845EC2",id:"voter"},
+            {icon:"📋",label:t.pan,     color:"#FF6B6B",id:"pan"},
+            {icon:"📝",label:t.vehicle, color:"#F9A826",id:"marksheet"},
+            {icon:"📄",label:t.ration,  color:"#4CAF50",id:"nios"},
+            {icon:"🏠",label:t.dl,      color:"#2196F3",id:"haryana"},
           ].map((s,i)=>(
             <div key={i} className="svc-card" style={{background:th.statBg}} onClick={()=>handleMenuClick(s.id)}
               onMouseEnter={e=>e.currentTarget.style.borderColor=s.color}
@@ -332,6 +392,7 @@ export default function SevaZone() {
       </div>
     );
 
+    // ── ADD MONEY ──────────────────────────────
     if (activeMenu==="addMoney") {
       const amt = parseInt(addAmount)||0;
       const mins = String(Math.floor(qrTimer/60)).padStart(2,"0");
@@ -368,9 +429,11 @@ export default function SevaZone() {
                 <div style={{color:accent,fontWeight:900,fontSize:40,marginTop:6}}>₹ {amt}</div>
               </div>
               <div style={{background:"white",borderRadius:16,padding:16,marginBottom:16,display:"inline-block",boxShadow:"0 4px 20px rgba(0,0,0,0.15)"}}>
-                <img src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent("upi://pay?pa=9053661570@ptsbi&pn=SevaZone&am="+amt+"&cu=INR")}`}
+                <img
+                  src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent("upi://pay?pa=9053661570@ptsbi&pn=SevaZone&am="+amt+"&cu=INR")}`}
                   alt="UPI QR" style={{width:200,height:200,display:"block"}}
-                  onError={e=>{e.target.style.display="none";e.target.nextSibling.style.display="flex";}}/>
+                  onError={e=>{e.target.style.display="none";e.target.nextSibling.style.display="flex";}}
+                />
                 <div style={{display:"none",width:200,height:200,alignItems:"center",justifyContent:"center",flexDirection:"column",gap:8,background:"#f5f5f5",borderRadius:8}}>
                   <span style={{fontSize:40}}>📱</span>
                   <span style={{fontSize:12,color:"#666",fontWeight:600,textAlign:"center",padding:"0 10px"}}>UPI ID:<br/>9053661570@ptsbi</span>
@@ -391,8 +454,7 @@ export default function SevaZone() {
           </div>
         </div>
       );
-
-return (
+      return (
         <div className="fade-up">
           <h2 style={{color:th.text,fontWeight:900,fontSize:22,marginBottom:20}}>💰 {t.addMoney}</h2>
           <div style={{maxWidth:420,margin:"0 auto"}}>
@@ -405,7 +467,7 @@ return (
               <div style={{position:"relative",marginBottom:20}}>
                 <span style={{position:"absolute",left:14,top:"50%",transform:"translateY(-50%)",color:accent,fontWeight:900,fontSize:20}}>₹</span>
                 <input type="number" placeholder="0" value={addAmount} onChange={e=>setAddAmount(e.target.value)}
-                  style={{width:"100%",background:th.inputBg,border:`2px solid ${addAmount?accent:th.inputBorder}`,borderRadius:12,padding:"14px 14px 14px 36px",color:th.text,fontSize:24,fontWeight:800,outline:"none",fontFamily:"'Outfit',sans-serif"}}/>
+                  style={{width:"100%",background:th.inputBg,border:`2px solid ${addAmount?accent:th.inputBorder}`,borderRadius:12,padding:"14px 14px 14px 36px",color:th.text,fontSize:24,fontWeight:800,outline:"none",fontFamily:"'Outfit',sans-serif"}} />
               </div>
               <div style={{color:th.subtext,fontSize:12,fontWeight:700,textTransform:"uppercase",letterSpacing:1,marginBottom:10}}>Quick Select</div>
               <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:10,marginBottom:24}}>
@@ -423,6 +485,7 @@ return (
       );
     }
 
+    // ── RECHARGE HISTORY ───────────────────────
     if (activeMenu==="rechargeHist") return (
       <div className="fade-up">
         <h2 style={{color:th.text,fontWeight:900,fontSize:22,marginBottom:20}}>📄 {t.rechargeHist}</h2>
@@ -446,6 +509,7 @@ return (
       </div>
     );
 
+    // ── WALLET HISTORY ─────────────────────────
     if (activeMenu==="walletHist") return (
       <div className="fade-up">
         <h2 style={{color:th.text,fontWeight:900,fontSize:22,marginBottom:20}}>💼 {t.walletHist}</h2>
@@ -473,6 +537,7 @@ return (
       </div>
     );
 
+    // ── PROFILE ────────────────────────────────
     if (activeMenu==="profile") return (
       <div className="fade-up">
         <h2 style={{color:th.text,fontWeight:900,fontSize:22,marginBottom:20}}>👤 {t.profile}</h2>
@@ -496,11 +561,11 @@ return (
             </div>
           </div>
           {[
-            {icon:"👤",label:t.fullName,   val:userName,  onChange:e=>setUserName(e.target.value)},
-            {icon:"📱",label:t.mobileLabel,val:"8307950410",readOnly:true},
-            {icon:"📧",label:t.email,      val:"farhan@example.com"},
-            {icon:"📍",label:t.city,       val:userCity,  onChange:e=>setUserCity(e.target.value)},
-            {icon:"🗺️",label:t.state,      val:userState, onChange:e=>setUserState(e.target.value)},
+            {icon:"👤",label:t.fullName,    val:userName,   onChange:e=>setUserName(e.target.value)},
+            {icon:"📱",label:t.mobileLabel, val:"8307950410",readOnly:true},
+            {icon:"📧",label:t.email,       val:"farhan@example.com"},
+            {icon:"📍",label:t.city,        val:userCity,   onChange:e=>setUserCity(e.target.value)},
+            {icon:"🗺️",label:t.state,       val:userState,  onChange:e=>setUserState(e.target.value)},
           ].map((f,i)=>(
             <div key={i} style={{marginBottom:14}}>
               <div style={{color:th.subtext,fontSize:12,fontWeight:700,marginBottom:6}}>{f.icon} {f.label}</div>
@@ -511,7 +576,7 @@ return (
         </div>
       </div>
     );
-
+    // ── TRAINING ───────────────────────────────
     if (activeMenu==="training") return (
       <div className="fade-up">
         <h2 style={{color:th.text,fontWeight:900,fontSize:22,marginBottom:20}}>🎬 {t.training}</h2>
@@ -529,6 +594,7 @@ return (
       </div>
     );
 
+    // ── COMING SOON ────────────────────────────
     return (
       <div className="fade-up" style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",minHeight:320,textAlign:"center"}}>
         <div style={{fontSize:64,marginBottom:16}}>🚧</div>
@@ -538,6 +604,8 @@ return (
       </div>
     );
   };
+
+  // ── LOGIN PAGE ────────────────────────────────
   if (page==="login") return (
     <div style={{fontFamily:"'Outfit',sans-serif",minHeight:"100vh",background:th.bg,display:"flex",flexDirection:"column",position:"relative",overflow:"hidden"}}>
       <style>{css}</style>
@@ -599,15 +667,36 @@ return (
 
           {authTab==="forgot"&&(
             <div className="fade-up">
-              <div style={{background:"rgba(249,168,38,0.1)",border:"1px solid rgba(249,168,38,0.25)",borderRadius:12,padding:"12px 14px",marginBottom:18,color:"#F9A826",fontSize:13,fontWeight:600}}>⚠️ Registered mobile number daalo</div>
-              <div style={{position:"relative",marginBottom:16}}>
-                <span style={{position:"absolute",left:13,top:"50%",transform:"translateY(-50%)",fontSize:16}}>📱</span>
-                <input className="form-input" placeholder={t.mobileLabel} type="tel"/>
-              </div>
-              <button className="submit-btn" onClick={()=>{setLoading(true);setTimeout(()=>{setLoading(false);showToast("OTP sent! ✅");},1200);}} disabled={loading}>
-                {loading?<><span className="spinner"/>{t.sendOtp}...</>:`📨 ${t.sendOtp}`}
-              </button>
-              <div style={{textAlign:"center",marginTop:14}}><button className="link-btn" onClick={()=>setAuthTab("login")}>{t.backLogin}</button></div>
+              {forgotStep==="mobile"&&<>
+                <div style={{background:"rgba(249,168,38,0.1)",border:"1px solid rgba(249,168,38,0.25)",borderRadius:12,padding:"12px 14px",marginBottom:18,color:"#F9A826",fontSize:13,fontWeight:600}}>⚠️ Registered mobile daalo — OTP screen par aayega</div>
+                <div style={{position:"relative",marginBottom:16}}>
+                  <span style={{position:"absolute",left:13,top:"50%",transform:"translateY(-50%)",fontSize:16}}>📱</span>
+                  <input className="form-input" placeholder={t.mobileLabel} type="tel" maxLength={10} value={forgotMobile} onChange={e=>setForgotMobile(e.target.value)}/>
+                </div>
+                <button className="submit-btn" onClick={handleSendOtp} disabled={loading}>{loading?<><span className="spinner"/>Sending...</>:"📨 OTP Bhejo"}</button>
+              </>}
+              {forgotStep==="otp"&&<>
+                <div style={{background:"rgba(0,201,167,0.08)",border:"1px solid rgba(0,201,167,0.2)",borderRadius:12,padding:"12px 14px",marginBottom:18,color:"#00C9A7",fontSize:13,fontWeight:600}}>✅ OTP screen par dikhaya gaya hai — woh daalo</div>
+                <div style={{position:"relative",marginBottom:16}}>
+                  <span style={{position:"absolute",left:13,top:"50%",transform:"translateY(-50%)",fontSize:16}}>🔐</span>
+                  <input className="form-input" placeholder="6 digit OTP" type="tel" maxLength={6} value={enteredOtp} onChange={e=>setEnteredOtp(e.target.value)}/>
+                </div>
+                <button className="submit-btn" onClick={handleVerifyOtp}>✅ OTP Verify Karo</button>
+                <div style={{textAlign:"center",marginTop:12}}><button className="link-btn" onClick={()=>setForgotStep("mobile")}>← Wapas</button></div>
+              </>}
+              {forgotStep==="newpass"&&<>
+                <div style={{background:"rgba(0,201,167,0.08)",border:"1px solid rgba(0,201,167,0.2)",borderRadius:12,padding:"12px 14px",marginBottom:18,color:"#00C9A7",fontSize:13,fontWeight:600}}>✅ OTP sahi hai! Naya password set karo</div>
+                <div style={{position:"relative",marginBottom:12}}>
+                  <span style={{position:"absolute",left:13,top:"50%",transform:"translateY(-50%)",fontSize:16}}>🔒</span>
+                  <input className="form-input" placeholder="Naya Password" type="password" value={newPass} onChange={e=>setNewPass(e.target.value)}/>
+                </div>
+                <div style={{position:"relative",marginBottom:16}}>
+                  <span style={{position:"absolute",left:13,top:"50%",transform:"translateY(-50%)",fontSize:16}}>✅</span>
+                  <input className="form-input" placeholder="Password Confirm Karo" type="password" value={newPassConfirm} onChange={e=>setNewPassConfirm(e.target.value)}/>
+                </div>
+                <button className="submit-btn" onClick={handleResetPass}>🔐 Password Reset Karo</button>
+              </>}
+              <div style={{textAlign:"center",marginTop:14}}><button className="link-btn" onClick={()=>{setAuthTab("login");setForgotStep("mobile");}}>{t.backLogin}</button></div>
             </div>
           )}
 
@@ -623,13 +712,23 @@ return (
                   ))}
                 </div>
               </div>
-              {[{icon:"👤",ph:t.fullName},{icon:"📱",ph:t.mobileLabel,type:"tel"},{icon:"📧",ph:t.email,type:"email"},{icon:"🔒",ph:t.passwordLabel,type:"password"},{icon:"✅",ph:t.confirmPass,type:"password"}].map((f,i)=>(
-                <div key={i} style={{position:"relative",marginBottom:12}}>
-                  <span style={{position:"absolute",left:13,top:"50%",transform:"translateY(-50%)",fontSize:15}}>{f.icon}</span>
-                  <input className="form-input" placeholder={f.ph} type={f.type||"text"}/>
-                </div>
-              ))}
-              <button className="submit-btn" style={{marginTop:4}} onClick={()=>{setLoading(true);setTimeout(()=>{setLoading(false);showToast("Account created! Login karo ✅");setAuthTab("login");},1400);}} disabled={loading}>
+              <div style={{position:"relative",marginBottom:12}}>
+                <span style={{position:"absolute",left:13,top:"50%",transform:"translateY(-50%)",fontSize:15}}>👤</span>
+                <input className="form-input" placeholder={t.fullName} value={regName} onChange={e=>setRegName(e.target.value)}/>
+              </div>
+              <div style={{position:"relative",marginBottom:12}}>
+                <span style={{position:"absolute",left:13,top:"50%",transform:"translateY(-50%)",fontSize:15}}>📱</span>
+                <input className="form-input" placeholder={t.mobileLabel} type="tel" maxLength={10} value={regMobile} onChange={e=>setRegMobile(e.target.value)}/>
+              </div>
+              <div style={{position:"relative",marginBottom:12}}>
+                <span style={{position:"absolute",left:13,top:"50%",transform:"translateY(-50%)",fontSize:15}}>🔒</span>
+                <input className="form-input" placeholder={t.passwordLabel} type="password" value={regPass} onChange={e=>setRegPass(e.target.value)}/>
+              </div>
+              <div style={{position:"relative",marginBottom:16}}>
+                <span style={{position:"absolute",left:13,top:"50%",transform:"translateY(-50%)",fontSize:15}}>✅</span>
+                <input className="form-input" placeholder={t.confirmPass} type="password" value={regConfirm} onChange={e=>setRegConfirm(e.target.value)}/>
+              </div>
+              <button className="submit-btn" style={{marginTop:4}} onClick={handleRegister} disabled={loading}>
                 {loading?<><span className="spinner"/>{t.registerBtn}...</>:`${role==="retailer"?"🏪":"🏢"} ${t.registerBtn}`}
               </button>
               <div style={{textAlign:"center",marginTop:12}}>
@@ -642,12 +741,13 @@ return (
       </div>
     </div>
   );
-
- return (
+    // ── DASHBOARD LAYOUT ──────────────────────────
+  return (
     <div style={{fontFamily:"'Outfit',sans-serif",minHeight:"100vh",background:th.bg,display:"flex",flexDirection:"column",transition:"background 0.3s"}}>
       <style>{css}</style>
       {toast&&<div className="toast-box" style={{background:toast.type==="error"?"linear-gradient(135deg,#ff5252,#c62828)":"linear-gradient(135deg,#00C9A7,#00695C)",color:"white"}}>{toast.msg}</div>}
 
+      {/* TOPBAR */}
       <div style={{background:th.topbar,padding:"0 20px",height:58,display:"flex",alignItems:"center",justifyContent:"space-between",boxShadow:"0 4px 20px rgba(0,0,0,0.2)",position:"sticky",top:0,zIndex:100}}>
         <div style={{display:"flex",alignItems:"center",gap:14}}>
           <button onClick={()=>setSidebarOpen(!sidebarOpen)} style={{background:"none",border:"none",color:"white",fontSize:20,cursor:"pointer"}}>☰</button>
@@ -691,6 +791,7 @@ return (
       </div>
 
       <div style={{display:"flex",flex:1}}>
+        {/* SIDEBAR */}
         <div style={{width:sidebarOpen?224:0,overflow:"hidden",background:th.sidebar,transition:"width 0.3s ease",display:"flex",flexDirection:"column",flexShrink:0,boxShadow:"3px 0 16px rgba(0,0,0,0.12)"}}>
           <div style={{margin:"14px 12px",background:"rgba(255,255,255,0.1)",borderRadius:12,padding:"13px 14px",border:"1px solid rgba(255,255,255,0.12)"}}>
             <div style={{color:"rgba(255,255,255,0.55)",fontSize:11,fontWeight:700,textTransform:"uppercase",letterSpacing:1}}>{t.walletBal}</div>
@@ -705,12 +806,12 @@ return (
             ))}
             <div style={{color:"rgba(255,255,255,0.35)",fontSize:10,fontWeight:800,textTransform:"uppercase",letterSpacing:1.5,padding:"10px 6px 4px"}}>{t.services}</div>
             {[
-              {id:"aadhar",   icon:"🪪", key:"aadhar"},
-              {id:"voter",    icon:"🗳️", key:"voter"},
-              {id:"pan",      icon:"📋", key:"pan"},
-              {id:"marksheet",icon:"📝", key:"vehicle"},
-              {id:"nios",     icon:"📄", key:"ration"},
-              {id:"haryana",  icon:"🏠", key:"dl"},
+              {id:"aadhar",  icon:"🪪", key:"aadhar"},
+              {id:"voter",   icon:"🗳️", key:"voter"},
+              {id:"pan",     icon:"📋", key:"pan"},
+              {id:"marksheet",icon:"📝",key:"vehicle"},
+              {id:"nios",    icon:"📄", key:"ration"},
+              {id:"haryana", icon:"🏠", key:"dl"},
             ].map(item=>(
               <div key={item.id}>
                 <div className={`nav-item${activeMenu===item.id&&!activeSubMenu?" active":""}`} onClick={()=>handleMenuClick(item.id)}>
@@ -746,9 +847,11 @@ return (
           </div>
         </div>
 
+        {/* MAIN CONTENT */}
         <div style={{flex:1,padding:22,overflowY:"auto"}}>{renderContent()}</div>
       </div>
 
+      {/* FLOATING SUPPORT */}
       <div style={{position:"fixed",bottom:20,left:20,zIndex:200}}>
         {supportOpen&&(
           <div style={{position:"fixed",bottom:90,left:20,background:th.cardSolid,border:`1px solid ${th.border}`,borderRadius:16,padding:16,width:220,boxShadow:"0 16px 48px rgba(0,0,0,0.3)",animation:"popIn 0.25s ease"}}>
@@ -771,4 +874,4 @@ return (
       </div>
     </div>
   );
-}
+      }
