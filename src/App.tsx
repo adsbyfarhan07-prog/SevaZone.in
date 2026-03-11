@@ -322,7 +322,7 @@ export default function SevaZone() {
               </div>
               <div>
                 <div style={{color:th.subtext,fontSize:12,fontWeight:700,marginBottom:6}}>Image</div>
-                <input type="file" accept="image/*" style={{width:"100%",padding:"8px",border:"1.5px solid rgba(0,201,167,0.3)",borderRadius:10,background:th.inputBg,color:th.text,cursor:"pointer",boxSizing:"border-box"}} onChange={e=>{const f=e.target.files[0];if(f)showToast("✅ "+f.name);}}/>
+                <input type="file" accept="image/*" style={{width:"100%",padding:"8px",border:"1.5px solid rgba(0,201,167,0.3)",borderRadius:10,background:"transparent",color:th.text,cursor:"pointer",boxSizing:"border-box"}} onChange={e=>{const f=e.target.files[0];if(f)showToast("✅ "+f.name);}}/>
               </div>
             </div>
             <button className="submit-btn" style={{maxWidth:160}} onClick={()=>showToast("✅ Submitted!")}>✅ Submit</button>
