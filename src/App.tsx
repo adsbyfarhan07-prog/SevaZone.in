@@ -307,8 +307,7 @@ export default function SevaZone() {
   const renderContent = () => {
 
     // Sub menu page
-    if (activeSubMenu) {
-      if (activeSubMenu.id==="voter_manual") return (
+    if (activeSubMenu.id==="voter_manual") return (
         <div className="fade-up">
           <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:24}}>
             {backBtn(()=>setActiveSubMenu(null))}
@@ -332,7 +331,6 @@ export default function SevaZone() {
           </div>
         </div>
       );
-
       if (activeSubMenu.id==="voter_list") {
         const data=[
           {sn:"001",epicNo:"ABC1234567",name:"Ramesh Kumar",date:"2026-03-03"},
