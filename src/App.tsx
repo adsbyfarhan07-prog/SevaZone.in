@@ -321,8 +321,8 @@ export default function SevaZone() {
               </div>
               <div>
                 <label style={labelStyle}>Image</label>
-                <label style={{display:"flex",alignItems:"center",gap:8,background:`rgba(0,201,167,0.08)`,border:`1.5px dashed ${accent}`,borderRadius:10,padding:"9px 12px",cursor:"pointer"}}>
-                  <span>📷</span><span style={{color:accent,fontWeight:700,fontSize:12}}>Choose File</span>
+                <label style={{display:"flex",alignItems:"center",gap:8,background:"rgba(0,201,167,0.08)",border:"1.5px dashed #00C9A7",borderRadius:10,padding:"9px 12px",cursor:"pointer"}}>
+                  <span>📷</span><span style={{color:"#00C9A7",fontWeight:700,fontSize:12}}>Choose File</span>
                   <input type="file" accept="image/*" style={{display:"none"}} onChange={e=>{const f=e.target.files[0];if(f)showToast("✅ "+f.name);}}/>
                 </label>
               </div>
@@ -331,11 +331,11 @@ export default function SevaZone() {
           </div>
         </div>
       );
-      if (activeSubMenu.id==="voter_list") {
+    if (activeSubMenu.id==="voter_list") {
         const data=[
           {sn:"001",epicNo:"ABC1234567",name:"Ramesh Kumar",date:"2026-03-03"},
-          {sn:"002",epicNo:"XYZ9876543",name:"Sunita Devi", date:"2026-03-04"},
-          {sn:"003",epicNo:"PQR4561237",name:"Amit Singh",  date:"2026-03-05"},
+          {sn:"002",epicNo:"XYZ9876543",name:"Sunita Devi",date:"2026-03-04"},
+          {sn:"003",epicNo:"PQR4561237",name:"Amit Singh",date:"2026-03-05"},
         ];
         return (
           <div className="fade-up">
@@ -351,19 +351,21 @@ export default function SevaZone() {
                   ))}
                 </tr></thead>
                 <tbody>{data.map((r,i)=>(
-                  <tr key={i} style={{borderTop:`1px solid ${th.border}`}}>
-                    <td style={{padding:"12px 14px",color:accent,fontWeight:700}}>{r.sn}</td>
-                    <td style={{padding:"12px 14px",color:th.text,fontWeight:600}}>{r.epicNo}</td>
-                    <td style={{padding:"12px 14px",color:th.text}}>{r.name}</td>
-                    <td style={{padding:"12px 14px",color:th.subtext}}>{r.date}</td>
-                    <td style={{padding:"12px 14px"}}><button onClick={()=>showToast("✅ Downloading...")} style={{background:"linear-gradient(135deg,#2196F3,#1565C0)",color:"white",border:"none",borderRadius:8,padding:"8px 14px",fontWeight:700,fontSize:12,cursor:"pointer",fontFamily:"'Outfit',sans-serif"}}>Download</button></td>
+                  <tr key={i} style={{borderTop:"1px solid rgba(0,201,167,0.15)"}}>
+                    <td style={{padding:"12px 14px",color:"#00C9A7",fontWeight:700}}>{r.sn}</td>
+                    <td style={{padding:"12px 14px",fontWeight:600}}>{r.epicNo}</td>
+                    <td style={{padding:"12px 14px"}}>{r.name}</td>
+                    <td style={{padding:"12px 14px",opacity:0.6}}>{r.date}</td>
+                    <td style={{padding:"12px 14px"}}>
+                      <button onClick={()=>showToast("✅ Downloading...")} style={{background:"linear-gradient(135deg,#2196F3,#1565C0)",color:"white",border:"none",borderRadius:8,padding:"8px 14px",fontWeight:700,fontSize:12,cursor:"pointer",fontFamily:"'Outfit',sans-serif"}}>Download</button>
+                    </td>
                   </tr>
                 ))}</tbody>
               </table>
             </div>
           </div>
         );
-      }
+            }
       // ── AADHAR MANUAL PRINT FORM ─────────────
       if (activeSubMenu.id === "aadhar_manual") {
         return (
