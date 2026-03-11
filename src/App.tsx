@@ -308,64 +308,7 @@ export default function SevaZone() {
 
     // Sub menu page
     if (activeSubMenu) {
-      if (activeSubMenu.id==="voter_manual") return (
-        <div className="fade-up">
-          <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:24}}>
-            {backBtn(()=>setActiveSubMenu(null))}
-            <h2 style={{color:th.text,fontWeight:900,fontSize:20}}>🖨️ Voter Manual Print</h2>
-          </div>
-          <div style={{background:th.statBg,borderRadius:16,padding:24,boxShadow:"0 2px 14px rgba(0,0,0,0.1)",maxWidth:500}}>
-            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:14,marginBottom:20}}>
-              <div>
-                <label style={labelStyle}>Epic No.</label>
-                <input style={fieldStyle} placeholder="Enter epic no"/>
-              </div>
-              <div>
-                <label style={labelStyle}>Image</label>
-                <label style={{display:"flex",alignItems:"center",gap:8,background:`rgba(0,201,167,0.08)`,border:`1.5px dashed ${accent}`,borderRadius:10,padding:"9px 12px",cursor:"pointer"}}>
-                  <span>📷</span><span style={{color:accent,fontWeight:700,fontSize:12}}>Choose File</span>
-                  <input type="file" accept="image/*" style={{display:"none"}} onChange={e=>{const f=e.target.files[0];if(f)showToast("✅ "+f.name);}}/>
-                </label>
-              </div>
-            </div>
-            <button className="submit-btn" style={{maxWidth:160}} onClick={()=>showToast("✅ Submitted!")}>✅ Submit</button>
-          </div>
-        </div>
-      );
 
-      if (activeSubMenu.id==="voter_list") {
-        const data=[
-          {sn:"001",epicNo:"ABC1234567",name:"Ramesh Kumar",date:"2026-03-03"},
-          {sn:"002",epicNo:"XYZ9876543",name:"Sunita Devi", date:"2026-03-04"},
-          {sn:"003",epicNo:"PQR4561237",name:"Amit Singh",  date:"2026-03-05"},
-        ];
-        return (
-          <div className="fade-up">
-            <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:24}}>
-              {backBtn(()=>setActiveSubMenu(null))}
-              <h2 style={{color:th.text,fontWeight:900,fontSize:20}}>📋 Voter Print List</h2>
-            </div>
-            <div style={{background:th.statBg,borderRadius:14,overflow:"auto",boxShadow:"0 2px 12px rgba(0,0,0,0.08)"}}>
-              <table style={{width:"100%",borderCollapse:"collapse",fontSize:13}}>
-                <thead><tr style={{background:dark?"rgba(0,201,167,0.08)":"#f0fdf9"}}>
-                  {["Serial Number","Epic Number","Name","Date","Download"].map(h=>(
-                    <th key={h} style={{padding:"12px 14px",textAlign:"left",color:th.subtext,fontWeight:800,fontSize:11,textTransform:"uppercase"}}>{h}</th>
-                  ))}
-                </tr></thead>
-                <tbody>{data.map((r,i)=>(
-                  <tr key={i} style={{borderTop:`1px solid ${th.border}`}}>
-                    <td style={{padding:"12px 14px",color:accent,fontWeight:700}}>{r.sn}</td>
-                    <td style={{padding:"12px 14px",color:th.text,fontWeight:600}}>{r.epicNo}</td>
-                    <td style={{padding:"12px 14px",color:th.text}}>{r.name}</td>
-                    <td style={{padding:"12px 14px",color:th.subtext}}>{r.date}</td>
-                    <td style={{padding:"12px 14px"}}><button onClick={()=>showToast("✅ Downloading...")} style={{background:"linear-gradient(135deg,#2196F3,#1565C0)",color:"white",border:"none",borderRadius:8,padding:"8px 14px",fontWeight:700,fontSize:12,cursor:"pointer",fontFamily:"'Outfit',sans-serif"}}>Download</button></td>
-                  </tr>
-                ))}</tbody>
-              </table>
-            </div>
-          </div>
-        );
-      }
       // ── AADHAR MANUAL PRINT FORM ─────────────
       if (activeSubMenu.id === "aadhar_manual") {
         return (
