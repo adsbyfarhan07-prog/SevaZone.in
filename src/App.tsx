@@ -318,7 +318,7 @@ export default function SevaZone() {
             <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:14,marginBottom:20}}>
               <div>
                 <div style={{color:th.subtext,fontSize:12,fontWeight:700,marginBottom:6}}>Epic No.</div>
-                <input style={{width:"100%",padding:"10px 14px",borderRadius:10,border:"1.5px solid rgba(0,201,167,0.3)",background:th.inputBg,color:th.text,fontSize:14,fontFamily:"'Outfit',sans-serif",boxSizing:"border-box"}} placeholder="Enter epic no"/>
+                <input style={{width:"100%",padding:"10px 14px",borderRadius:10,border:"1.5px solid rgba(0,201,167,0.3)",background:"transparent",color:th.text,fontSize:14,fontFamily:"'Outfit',sans-serif",boxSizing:"border-box"}} placeholder="Enter epic no"/>
               </div>
               <div>
                 <div style={{color:th.subtext,fontSize:12,fontWeight:700,marginBottom:6}}>Image</div>
