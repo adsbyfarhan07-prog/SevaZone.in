@@ -95,7 +95,8 @@ const INIT_WALLET = [
 ];
 
 export default function SevaZone() {
-  const getInitPage = () => { try { return sessionStorage.getItem("sz_logged")==="1"?"dashboard":"login"; } catch { return "login"; } };
+console.log("Supabase client:", supabase);
+const getInitPage = () => { try { return sessionStorage.getItem("sz_logged")==="1"?"dashboard":"login"; } catch { return "login"; } };
 
   const [page, setPage]               = useState(getInitPage);
   const [authTab, setAuthTab]         = useState("login");
