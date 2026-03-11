@@ -314,7 +314,7 @@ export default function SevaZone() {
             {backBtn(()=>setActiveSubMenu(null))}
             <h2 style={{color:th.text,fontWeight:900,fontSize:20}}>🖨️ Voter Manual Print</h2>
           </div>
-          <div style={{background:th.card,borderRadius:16,padding:24,boxShadow:"0 2px 14px rgba(0,0,0,0.1)",maxWidth:500}}>
+          <div style={{background:th.statBg,borderRadius:16,padding:24,boxShadow:"0 2px 14px rgba(0,0,0,0.1)",maxWidth:500}}>
             <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:14,marginBottom:20}}>
               <div>
                 <div style={{color:th.subtext,fontSize:12,fontWeight:700,marginBottom:6}}>Epic No.</div>
