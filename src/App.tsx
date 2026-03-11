@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-
+import { supabase } from "./supabaseClient";
 const DEMO_USER = { mobile: "8307950410", password: "seva123" };
 
 const T = {
