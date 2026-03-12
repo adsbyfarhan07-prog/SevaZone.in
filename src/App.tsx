@@ -157,15 +157,23 @@ const getInitPage = () => { try { return sessionStorage.getItem("sz_logged")==="
     setTimeout(()=>{ setLoading(false); setUserName(found.name||"User"); setUserCity(found.city||""); setUserState(found.state||""); setRole(found.role||"retailer"); setWalletBalance(found.wallet||0); try{sessionStorage.setItem("sz_logged","1");}catch{} setPage("dashboard"); },1200);
   };
     const handleRegister = async () => {
-    await supabase.from("users").insert([
-  {
-    name: regName,
-    mobile: regMobile,
-    email: regEmail,
-    role: role,
-    wallet_balance: 0
-  }
-]);
+    const { data, error } = await supabase
+  .from("users")
+  .insert([
+    {
+      name: regName,
+      mobile: regMobile,
+      email: regEmail,
+      role: role,
+      wallet_balance: 0
+    }
+  ]);
+
+if (error) {
+  console.log(error);
+} else {
+  console.log("User saved to Supabase");
+}
     if (!regName||!regMobile||!regPass||!regConfirm) { showToast(t.fillFields,"error"); return; }
     if (regMobile.length!==10) { showToast("❌ 10 digit mobile daalo!","error"); return; }
     if (regPass.length<6) { showToast("❌ Password 6+ characters ka ho!","error"); return; }
