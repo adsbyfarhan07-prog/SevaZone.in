@@ -156,8 +156,7 @@ const getInitPage = () => { try { return sessionStorage.getItem("sz_logged")==="
     setLoading(true);
     setTimeout(()=>{ setLoading(false); setUserName(found.name||"User"); setUserCity(found.city||""); setUserState(found.state||""); setRole(found.role||"retailer"); setWalletBalance(found.wallet||0); try{sessionStorage.setItem("sz_logged","1");}catch{} setPage("dashboard"); },1200);
   };
-
-  const handleRegister = () => {
+    const handleRegister = async () => {
     await supabase.from("users").insert([
   {
     name: regName,
