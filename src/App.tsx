@@ -158,6 +158,15 @@ const getInitPage = () => { try { return sessionStorage.getItem("sz_logged")==="
   };
 
   const handleRegister = () => {
+    await supabase.from("users").insert([
+  {
+    name: regName,
+    mobile: regMobile,
+    email: regEmail,
+    role: role,
+    wallet_balance: 0
+  }
+]);
     if (!regName||!regMobile||!regPass||!regConfirm) { showToast(t.fillFields,"error"); return; }
     if (regMobile.length!==10) { showToast("❌ 10 digit mobile daalo!","error"); return; }
     if (regPass.length<6) { showToast("❌ Password 6+ characters ka ho!","error"); return; }
