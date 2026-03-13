@@ -77,6 +77,16 @@ const SUB_MENUS = {
     {id:"pan_manual",  icon:"🖨️", label:"Pan Manual"},
     {id:"pan_list",    icon:"📋", label:"Pan Manual Print List"},
   ],
+  marksheet:[
+    {id:"marksheet_10", icon:"📝", label:"10th Marksheet"},
+    {id:"marksheet_12", icon:"📝", label:"12th Marksheet"},
+  ],
+  nios:[
+    {id:"nios_form", icon:"📄", label:"NIOS Certificate Manual"},
+  ],
+  haryana:[
+    {id:"haryana_form", icon:"🏠", label:"Haryana Resident Manual"},
+  ],
 };
 
 const RECHARGE_DATA = [
