@@ -135,6 +135,12 @@ const getInitPage = () => { try { return sessionStorage.getItem("sz_logged")==="
   const [forgotStep, setForgotStep]       = useState("mobile");
   const [newPass, setNewPass]             = useState("");
   const [newPassConfirm, setNewPassConfirm] = useState("");
+  const [voterEpicNo, setVoterEpicNo]   = useState("");
+  const [panNo, setPanNo]               = useState("");
+  const [panName, setPanName]           = useState("");
+  const [panFather, setPanFather]       = useState("");
+  const [panDob, setPanDob]             = useState("");
+  const [panGender, setPanGender]       = useState("");
   const timerRef = useRef(null);
   const t = T[lang];
   const accent = "#00C9A7";
