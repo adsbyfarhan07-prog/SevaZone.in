@@ -855,7 +855,10 @@ if (error) {
     if (activeMenu==="aadhar") return subGrid("aadhar","🪪",t.aadhar,accent);
     if (activeMenu==="voter")  return subGrid("voter","🗳️",t.voter,"#845EC2");
     if (activeMenu==="pan")    return subGrid("pan","📋",t.pan,"#FF6B6B");
-
+    if (activeMenu==="marksheet") return subGrid("marksheet","📝",t.vehicle,"#F9A826");
+if (activeMenu==="nios")      return subGrid("nios","📄",t.ration,"#4CAF50");
+if (activeMenu==="haryana")   return subGrid("haryana","🏠",t.dl,"#2196F3");
+    
     // ── DASHBOARD ──────────────────────────────
     if (activeMenu==="dashboard") return (
       <div className="fade-up">
