@@ -736,7 +736,88 @@ if (error) {
           </div>
         );
     }
+      if (activeSubMenu.id==="nios_form") return (
+        <div className="fade-up">
+          <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:24}}>
+            {backBtn(()=>setActiveSubMenu(null))}
+            <h2 style={{color:th.text,fontWeight:900,fontSize:20}}>📄 NIOS Certificate Issue Manual</h2>
+          </div>
+          <div style={{background:th.statBg,borderRadius:16,padding:24,maxWidth:600}}>
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:14,marginBottom:14}}>
+              {[{label:"NAME",ph:"Name in English"},{label:"Father Name",ph:"Father Name"},{label:"Mother's Name",ph:"Mother's Name"}].map((f,i)=>(
+                <div key={i}>
+                  <div style={{color:"#F9A826",fontSize:12,fontWeight:700,marginBottom:6}}>{f.label}</div>
+                  <input style={{width:"100%",background:th.inputBg,border:`1.5px solid ${th.inputBorder}`,borderRadius:10,padding:"10px 12px",color:th.text,fontSize:13,outline:"none",fontFamily:"'Outfit',sans-serif"}} placeholder={f.ph}/>
+                </div>
+              ))}
+            </div>
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:14,marginBottom:14}}>
+              <div>
+                <div style={{color:"#F9A826",fontSize:12,fontWeight:700,marginBottom:6}}>DOB</div>
+                <input type="date" style={{width:"100%",background:th.inputBg,border:`1.5px solid ${th.inputBorder}`,borderRadius:10,padding:"10px 12px",color:th.text,fontSize:13,outline:"none",fontFamily:"'Outfit',sans-serif"}}/>
+              </div>
+              <div>
+                <div style={{color:"#F9A826",fontSize:12,fontWeight:700,marginBottom:6}}>Examination Year</div>
+                <input style={{width:"100%",background:th.inputBg,border:`1.5px solid ${th.inputBorder}`,borderRadius:10,padding:"10px 12px",color:th.text,fontSize:13,outline:"none",fontFamily:"'Outfit',sans-serif"}} placeholder="OCT-2024"/>
+              </div>
+              <div>
+                <div style={{color:"#F9A826",fontSize:12,fontWeight:700,marginBottom:6}}>Photo</div>
+                <input type="file" accept="image/*" style={{width:"100%",padding:"8px",border:`1.5px solid ${th.inputBorder}`,borderRadius:10,background:th.inputBg,color:th.text,cursor:"pointer"}} onChange={e=>{const f=e.target.files[0];if(f)showToast("✅ "+f.name);}}/>
+              </div>
+            </div>
+            <button className="submit-btn" style={{maxWidth:160}} onClick={()=>showToast("✅ Submitted!")}>✅ Submit</button>
+          </div>
+        </div>
+      );
+      if (activeSubMenu.id==="haryana_form") return (
+        <div className="fade-up">
+          <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:24}}>
+            {backBtn(()=>setActiveSubMenu(null))}
+            <h2 style={{color:th.text,fontWeight:900,fontSize:20}}>🏠 Haryana Resident Manual</h2>
+          </div>
+          <div style={{background:th.statBg,borderRadius:16,padding:24,maxWidth:600}}>
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:14,marginBottom:14}}>
+              {[{label:"NAME",ph:"Name"},{label:"Father",ph:"Father Name"},{label:"Place",ph:"Place"}].map((f,i)=>(
+                <div key={i}>
+                  <div style={{color:"#F9A826",fontSize:12,fontWeight:700,marginBottom:6}}>{f.label}</div>
+                  <input style={{width:"100%",background:th.inputBg,border:`1.5px solid ${th.inputBorder}`,borderRadius:10,padding:"10px 12px",color:th.text,fontSize:13,outline:"none",fontFamily:"'Outfit',sans-serif"}} placeholder={f.ph}/>
+                </div>
+              ))}
+            </div>
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:14,marginBottom:14}}>
+              {[{label:"Mother Name",ph:"Mother Name"},{label:"House No.",ph:"House no"},{label:"Tahsil Name",ph:"Tahsil Name"}].map((f,i)=>(
+                <div key={i}>
+                  <div style={{color:"#F9A826",fontSize:12,fontWeight:700,marginBottom:6}}>{f.label}</div>
+                  <input style={{width:"100%",background:th.inputBg,border:`1.5px solid ${th.inputBorder}`,borderRadius:10,padding:"10px 12px",color:th.text,fontSize:13,outline:"none",fontFamily:"'Outfit',sans-serif"}} placeholder={f.ph}/>
+                </div>
+              ))}
+            </div>
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:14,marginBottom:14}}>
+              {[{label:"District",ph:"District"},{label:"Pin Code",ph:"Pin Code"},{label:"Landmark Name",ph:"Landmark Name"}].map((f,i)=>(
+                <div key={i}>
+                  <div style={{color:"#F9A826",fontSize:12,fontWeight:700,marginBottom:6}}>{f.label}</div>
+                  <input style={{width:"100%",background:th.inputBg,border:`1.5px solid ${th.inputBorder}`,borderRadius:10,padding:"10px 12px",color:th.text,fontSize:13,outline:"none",fontFamily:"'Outfit',sans-serif"}} placeholder={f.ph}/>
+                </div>
+              ))}
+            </div>
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:14,marginBottom:20}}>
+              {[{label:"Vill / Town Name",ph:"Vill / Town Name"},{label:"Town Name",ph:"Town Name"}].map((f,i)=>(
+                <div key={i}>
+                  <div style={{color:"#F9A826",fontSize:12,fontWeight:700,marginBottom:6}}>{f.label}</div>
+                  <input style={{width:"100%",background:th.inputBg,border:`1.5px solid ${th.inputBorder}`,borderRadius:10,padding:"10px 12px",color:th.text,fontSize:13,outline:"none",fontFamily:"'Outfit',sans-serif"}} placeholder={f.ph}/>
+                </div>
+              ))}
+              <div>
+                <div style={{color:"#F9A826",fontSize:12,fontWeight:700,marginBottom:6}}>Photo</div>
+                <input type="file" accept="image/*" style={{width:"100%",padding:"8px",border:`1.5px solid ${th.inputBorder}`,borderRadius:10,background:th.inputBg,color:th.text,cursor:"pointer"}} onChange={e=>{const f=e.target.files[0];if(f)showToast("✅ "+f.name);}}/>
+              </div>
+            </div>
+            <button className="submit-btn" style={{maxWidth:160}} onClick={()=>showToast("✅ Submitted!")}>✅ Submit</button>
+          </div>
+        </div>
+      );
            // ── OTHER SUB MENUS ──────────────────────
+      
       return (
       <div className="fade-up">
         <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:24}}>
