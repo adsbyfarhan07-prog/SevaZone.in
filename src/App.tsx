@@ -816,6 +816,119 @@ if (error) {
           </div>
         </div>
       );
+
+      if (activeSubMenu.id==="marksheet_10") return (
+        <div className="fade-up">
+          <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:24}}>
+            {backBtn(()=>setActiveSubMenu(null))}
+            <h2 style={{color:th.text,fontWeight:900,fontSize:20}}>📝 10th Marksheet Manual</h2>
+          </div>
+          <div style={{background:th.statBg,borderRadius:16,padding:24,maxWidth:700}}>
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:14,marginBottom:14}}>
+              {[{label:"Name In English",ph:"Name"},{label:"Name In Hindi",ph:"नाम"},{label:"Mother Name In English",ph:"Mother Name"}].map((f,i)=>(
+                <div key={i}><div style={{color:"#F9A826",fontSize:12,fontWeight:700,marginBottom:6}}>{f.label}</div>
+                <input style={{width:"100%",background:th.inputBg,border:`1.5px solid ${th.inputBorder}`,borderRadius:10,padding:"10px 12px",color:th.text,fontSize:13,outline:"none",fontFamily:"'Outfit',sans-serif"}} placeholder={f.ph}/></div>
+              ))}
+            </div>
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:14,marginBottom:14}}>
+              {[{label:"Mother Name In Hindi",ph:"माता का नाम"},{label:"Father Name In English",ph:"Father Name"},{label:"Father Name In Hindi",ph:"पिता का नाम"}].map((f,i)=>(
+                <div key={i}><div style={{color:"#F9A826",fontSize:12,fontWeight:700,marginBottom:6}}>{f.label}</div>
+                <input style={{width:"100%",background:th.inputBg,border:`1.5px solid ${th.inputBorder}`,borderRadius:10,padding:"10px 12px",color:th.text,fontSize:13,outline:"none",fontFamily:"'Outfit',sans-serif"}} placeholder={f.ph}/></div>
+              ))}
+            </div>
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:14,marginBottom:14}}>
+              {[{label:"School Full Name In English",ph:"School Name"},{label:"School Full Name In Hindi",ph:"विद्यालय का नाम"}].map((f,i)=>(
+                <div key={i}><div style={{color:"#F9A826",fontSize:12,fontWeight:700,marginBottom:6}}>{f.label}</div>
+                <input style={{width:"100%",background:th.inputBg,border:`1.5px solid ${th.inputBorder}`,borderRadius:10,padding:"10px 12px",color:th.text,fontSize:13,outline:"none",fontFamily:"'Outfit',sans-serif"}} placeholder={f.ph}/></div>
+              ))}
+            </div>
+            {[{s:"Subject 1"},{s:"Subject 2"},{s:"Subject 3"},{s:"Subject 4"},{s:"Subject 5"},{s:"Subject 6"}].map((sub,i)=>(
+              <div key={i} style={{display:"grid",gridTemplateColumns:"2fr 1fr 1fr 1fr",gap:10,marginBottom:10}}>
+                <div><div style={{color:"#F9A826",fontSize:11,fontWeight:700,marginBottom:4}}>SUBJECT</div>
+                <input style={{width:"100%",background:th.inputBg,border:`1.5px solid ${th.inputBorder}`,borderRadius:8,padding:"8px 10px",color:th.text,fontSize:12,outline:"none",fontFamily:"'Outfit',sans-serif"}} placeholder={sub.s}/></div>
+                <div><div style={{color:"#F9A826",fontSize:11,fontWeight:700,marginBottom:4}}>MARKS</div>
+                <input style={{width:"100%",background:th.inputBg,border:`1.5px solid ${th.inputBorder}`,borderRadius:8,padding:"8px 10px",color:th.text,fontSize:12,outline:"none",fontFamily:"'Outfit',sans-serif"}} placeholder="0/100"/></div>
+                <div><div style={{color:"#F9A826",fontSize:11,fontWeight:700,marginBottom:4}}>TOTAL MARKS</div>
+                <input style={{width:"100%",background:th.inputBg,border:`1.5px solid ${th.inputBorder}`,borderRadius:8,padding:"8px 10px",color:th.text,fontSize:12,outline:"none",fontFamily:"'Outfit',sans-serif"}} placeholder="100"/></div>
+                <div><div style={{color:"#F9A826",fontSize:11,fontWeight:700,marginBottom:4}}>GRADE</div>
+                <input style={{width:"100%",background:th.inputBg,border:`1.5px solid ${th.inputBorder}`,borderRadius:8,padding:"8px 10px",color:th.text,fontSize:12,outline:"none",fontFamily:"'Outfit',sans-serif"}} placeholder="A"/></div>
+              </div>
+            ))}
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr 1fr",gap:14,marginBottom:14,marginTop:10}}>
+              {[{label:"Grand Total Result",ph:"373/500"},{label:"Pass Year",ph:"2024"},{label:"Result Date",ph:"31ST JULY 2024"},{label:"District",ph:"District"}].map((f,i)=>(
+                <div key={i}><div style={{color:"#F9A826",fontSize:12,fontWeight:700,marginBottom:6}}>{f.label}</div>
+                <input style={{width:"100%",background:th.inputBg,border:`1.5px solid ${th.inputBorder}`,borderRadius:10,padding:"10px 12px",color:th.text,fontSize:13,outline:"none",fontFamily:"'Outfit',sans-serif"}} placeholder={f.ph}/></div>
+              ))}
+            </div>
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr 1fr",gap:14,marginBottom:20}}>
+              {[{label:"SR No.",ph:"1333386"},{label:"Roll Number",ph:"212082801"},{label:"School Code",ph:"55/15126/211"},{label:"Certificate No",ph:"55879061"}].map((f,i)=>(
+                <div key={i}><div style={{color:"#F9A826",fontSize:12,fontWeight:700,marginBottom:6}}>{f.label}</div>
+                <input style={{width:"100%",background:th.inputBg,border:`1.5px solid ${th.inputBorder}`,borderRadius:10,padding:"10px 12px",color:th.text,fontSize:13,outline:"none",fontFamily:"'Outfit',sans-serif"}} placeholder={f.ph}/></div>
+              ))}
+            </div>
+            <div style={{marginBottom:20}}>
+              <div style={{color:"#F9A826",fontSize:12,fontWeight:700,marginBottom:6}}>Photo</div>
+              <input type="file" accept="image/*" style={{padding:"8px",border:`1.5px solid ${th.inputBorder}`,borderRadius:10,background:th.inputBg,color:th.text,cursor:"pointer"}} onChange={e=>{const f=e.target.files[0];if(f)showToast("✅ "+f.name);}}/>
+            </div>
+            <button className="submit-btn" style={{maxWidth:160}} onClick={()=>showToast("✅ Submitted!")}>✅ Submit</button>
+          </div>
+        </div>
+      );
+      if (activeSubMenu.id==="marksheet_12") return (
+        <div className="fade-up">
+          <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:24}}>
+            {backBtn(()=>setActiveSubMenu(null))}
+            <h2 style={{color:th.text,fontWeight:900,fontSize:20}}>📝 12th Marksheet Manual</h2>
+          </div>
+          <div style={{background:th.statBg,borderRadius:16,padding:24,maxWidth:700}}>
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:14,marginBottom:14}}>
+              {[{label:"Name In English",ph:"RAJU"},{label:"Name In Hindi",ph:"नाम"},{label:"Mother Name In English",ph:"SUNITA"}].map((f,i)=>(
+                <div key={i}><div style={{color:"#F9A826",fontSize:12,fontWeight:700,marginBottom:6}}>{f.label}</div>
+                <input style={{width:"100%",background:th.inputBg,border:`1.5px solid ${th.inputBorder}`,borderRadius:10,padding:"10px 12px",color:th.text,fontSize:13,outline:"none",fontFamily:"'Outfit',sans-serif"}} placeholder={f.ph}/></div>
+              ))}
+            </div>
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:14,marginBottom:14}}>
+              {[{label:"Mother Name In Hindi",ph:"माता का नाम"},{label:"Father Name In English",ph:"Father Name"},{label:"Father Name In Hindi",ph:"पिता का नाम"}].map((f,i)=>(
+                <div key={i}><div style={{color:"#F9A826",fontSize:12,fontWeight:700,marginBottom:6}}>{f.label}</div>
+                <input style={{width:"100%",background:th.inputBg,border:`1.5px solid ${th.inputBorder}`,borderRadius:10,padding:"10px 12px",color:th.text,fontSize:13,outline:"none",fontFamily:"'Outfit',sans-serif"}} placeholder={f.ph}/></div>
+              ))}
+            </div>
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:14,marginBottom:14}}>
+              {[{label:"School Full Name In English",ph:"PREMA DEVI SMARAK INTER COLLEGE PATULKI PRATAPGARH"},{label:"School Full Name In Hindi",ph:"प्रेमा देवी स्मारक इंटर कॉलेज पटुलकी प्रतापगढ़"}].map((f,i)=>(
+                <div key={i}><div style={{color:"#F9A826",fontSize:12,fontWeight:700,marginBottom:6}}>{f.label}</div>
+                <input style={{width:"100%",background:th.inputBg,border:`1.5px solid ${th.inputBorder}`,borderRadius:10,padding:"10px 12px",color:th.text,fontSize:13,outline:"none",fontFamily:"'Outfit',sans-serif"}} placeholder={f.ph}/></div>
+              ))}
+            </div>
+            {[{s:"GENERAL HINDI"},{s:"ENGLISH"},{s:"PHYSICS"},{s:"CHEMISTRY"},{s:"BIOLOGY"},{s:"MORAL Y.S & P.EDU"}].map((sub,i)=>(
+              <div key={i} style={{display:"grid",gridTemplateColumns:"2fr 1fr 1fr",gap:10,marginBottom:10}}>
+                <div><div style={{color:"#F9A826",fontSize:11,fontWeight:700,marginBottom:4}}>SUBJECT</div>
+                <input style={{width:"100%",background:th.inputBg,border:`1.5px solid ${th.inputBorder}`,borderRadius:8,padding:"8px 10px",color:th.text,fontSize:12,outline:"none",fontFamily:"'Outfit',sans-serif"}} placeholder={sub.s}/></div>
+                <div><div style={{color:"#F9A826",fontSize:11,fontWeight:700,marginBottom:4}}>MARKS</div>
+                <input style={{width:"100%",background:th.inputBg,border:`1.5px solid ${th.inputBorder}`,borderRadius:8,padding:"8px 10px",color:th.text,fontSize:12,outline:"none",fontFamily:"'Outfit',sans-serif"}} placeholder="1/71"/></div>
+                <div><div style={{color:"#F9A826",fontSize:11,fontWeight:700,marginBottom:4}}>TOTAL MARKS</div>
+                <input style={{width:"100%",background:th.inputBg,border:`1.5px solid ${th.inputBorder}`,borderRadius:8,padding:"8px 10px",color:th.text,fontSize:12,outline:"none",fontFamily:"'Outfit',sans-serif"}} placeholder="071"/></div>
+              </div>
+            ))}
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr 1fr",gap:14,marginBottom:14,marginTop:10}}>
+              {[{label:"Grand Total Result",ph:"373/500"},{label:"Intermediate Pass Year",ph:"2024"},{label:"Result Date",ph:"31ST JULY 2024"},{label:"District",ph:"District"}].map((f,i)=>(
+                <div key={i}><div style={{color:"#F9A826",fontSize:12,fontWeight:700,marginBottom:6}}>{f.label}</div>
+                <input style={{width:"100%",background:th.inputBg,border:`1.5px solid ${th.inputBorder}`,borderRadius:10,padding:"10px 12px",color:th.text,fontSize:13,outline:"none",fontFamily:"'Outfit',sans-serif"}} placeholder={f.ph}/></div>
+              ))}
+            </div>
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr 1fr",gap:14,marginBottom:20}}>
+              {[{label:"SR No.",ph:"1333386"},{label:"Roll Number",ph:"212082801"},{label:"School Code",ph:"55/15126/211"},{label:"Certificate No",ph:"55879061"}].map((f,i)=>(
+                <div key={i}><div style={{color:"#F9A826",fontSize:12,fontWeight:700,marginBottom:6}}>{f.label}</div>
+                <input style={{width:"100%",background:th.inputBg,border:`1.5px solid ${th.inputBorder}`,borderRadius:10,padding:"10px 12px",color:th.text,fontSize:13,outline:"none",fontFamily:"'Outfit',sans-serif"}} placeholder={f.ph}/></div>
+              ))}
+            </div>
+            <div style={{marginBottom:20}}>
+              <div style={{color:"#F9A826",fontSize:12,fontWeight:700,marginBottom:6}}>Photo</div>
+              <input type="file" accept="image/*" style={{padding:"8px",border:`1.5px solid ${th.inputBorder}`,borderRadius:10,background:th.inputBg,color:th.text,cursor:"pointer"}} onChange={e=>{const f=e.target.files[0];if(f)showToast("✅ "+f.name);}}/>
+            </div>
+            <button className="submit-btn" style={{maxWidth:160}} onClick={()=>showToast("✅ Submitted!")}>✅ Submit</button>
+          </div>
+        </div>
+      );
            // ── OTHER SUB MENUS ──────────────────────
       
       return (
