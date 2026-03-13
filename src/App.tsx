@@ -815,7 +815,8 @@ if (error) {
             <button className="submit-btn" style={{maxWidth:160}} onClick={()=>showToast("✅ Submitted!")}>✅ Submit</button>
           </div>
         </div>
-
+        }
+    
       if (activeSubMenu.id==="marksheet_10") return (
         <div className="fade-up">
           <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:24}}>
