@@ -365,8 +365,7 @@ const INIT_WALLET = [
     const now = new Date();
     setPanPrintList(prev=>[{sn:String(prev.length+1).padStart(3,"0"),panNo:pNo||"—",name:pName||"—",dob:pDob||"—",date:now.toLocaleDateString("en-IN")},...prev]);
   };
-        const downloadNiosPDF = () => {
-    const doc = new jsPDF({orientation:"portrait",unit:"mm",format:"a4"});
+        
     const W=210, ml=15, mr=195;
     // Border
     doc.setDrawColor(0); doc.setLineWidth(0.8);
