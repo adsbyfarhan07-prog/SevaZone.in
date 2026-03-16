@@ -2203,4 +2203,3 @@ const INIT_WALLET = [
       </div>
     </div>
   );
-                       }
