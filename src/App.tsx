@@ -1,5 +1,4 @@
 import { useState, useRef } from "react";
-import { jsPDF } from "jspdf";
 import { generateNIOSPdf } from "@/utils/generateNIOSPdf";
 
 const DEMO_USER = { mobile: "8307950410", password: "seva123" };
