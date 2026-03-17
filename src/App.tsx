@@ -10,9 +10,9 @@ import { DEMO_USER } from "./data/demoUser";
 // ── Utils ────────────────────────────────────────
 import { initiatePayment } from "./utils/payment/razorpay";
 import { downloadPanTemplatePDF } from "./utils/helpers/pdfGenerators/panPdf";
-import { downloadMarksheet10PDF } from "./utils/pdfGenerators/marksheet10Pdf";
-import { downloadHaryanaDomicilePDF } from "./utils/pdfGenerators/haryanaDomicilePdf";
-import { downloadNiosPDF } from "./utils/pdfGenerators/niosPdf";
+import { downloadMarksheet10PDF } from "./utils/helpers/pdfGenerators/marksheet10Pdf"
+import { downloadHaryanaDomicilePDF } from "./utils/helpers/pdfGenerators/haryanaDomicilePdf"
+import { downloadNiosPDF } from "./utils/helpers/pdfGenerators/niosPdf"
 
 // ── Common Components ────────────────────────────
 import { Toast } from "./components/common/Toast";
