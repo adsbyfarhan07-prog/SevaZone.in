@@ -9,7 +9,7 @@ import { DEMO_USER } from "./data/demoUser";
 
 // ── Utils ────────────────────────────────────────
 import { initiatePayment } from "./utils/payment/razorpay";
-import { downloadPanTemplatePDF } from "./utils/pdfGenerators/panPdf";
+import { downloadPanTemplatePDF } from "./utils/helpers/pdfGenerators/panPdf
 import { downloadMarksheet10PDF } from "./utils/pdfGenerators/marksheet10Pdf";
 import { downloadHaryanaDomicilePDF } from "./utils/pdfGenerators/haryanaDomicilePdf";
 import { downloadNiosPDF } from "./utils/pdfGenerators/niosPdf";
