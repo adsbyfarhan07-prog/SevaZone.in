@@ -1945,5 +1945,3 @@ export default function SevaZone() {
     </div>
   );
 }
-```
-                
