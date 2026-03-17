@@ -298,18 +298,15 @@ export default function SevaZone() {
   const downloadPanPDF = () => {
     const doc = new jsPDF({orientation:"landscape",unit:"mm",format:[85.6,54]});
     const W=85.6, H=54;
-    // Blue gradient background
-    doc.setFillColor(100,160,220); doc.rect(0,0,W,H,"F");
-    doc.setFillColor(140,190,240); doc.rect(0,0,W,20,"F");
+    // PAN Template Background
+    doc.addImage(panTemplate, "PNG", 0, 0, W, H);
     // Border
     doc.setDrawColor(60,100,180); doc.setLineWidth(0.8);
     doc.rect(1,1,W-2,H-2);
     // Header
     doc.setFontSize(6); doc.setFont("helvetica","bold"); doc.setTextColor(20,40,120);
-    doc.text("आयकर विभाग", 12,8);
     doc.text("INCOME TAX DEPARTMENT", 12,12);
     doc.setTextColor(20,60,150);
-    doc.text("भारत सरकार", W-8,8,{align:"right"});
     doc.text("GOVT. OF INDIA", W-8,12,{align:"right"});
     // Subheading
     doc.setFontSize(5); doc.setTextColor(30,30,120);
