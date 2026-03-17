@@ -1,6 +1,6 @@
 // panPdf.ts
 import jsPDF from "jspdf";
-import panTemplate from "../assets/templates/pan.png"; // ✅ Direct import
+import panTemplate from "../../assets/templates/pan.png";
 
 export const downloadPanTemplatePDF = (data: {
   pNo: string;
@@ -21,35 +21,35 @@ export const downloadPanTemplatePDF = (data: {
   // ✅ Background Template
   doc.addImage(panTemplate, "PNG", 0, 0, W, 54);
 
-  // ✅ PAN Number — heading ke neeche center mein
+  // ✅ PAN Number
   doc.setFont("helvetica", "bold");
   doc.setFontSize(9);
   doc.setTextColor(20, 20, 100);
   doc.text(data.pNo || "XXXXXXXXXX", W / 2, 22, { align: "center" });
 
-  // ✅ Name — नाम / Name ke neeche
-  doc.setFontSize(6);
+  // ✅ Name
+  doc.setFontSize(6.5);
   doc.setFont("helvetica", "bold");
   doc.setTextColor(20, 20, 80);
   doc.text(data.pName || "", 25, 36);
 
-  // ✅ Father Name — पिता का नाम ke neeche
+  // ✅ Father Name
   doc.text(data.pFather || "", 25, 42);
 
-  // ✅ DOB — जन्म की तारीख ke neeche
+  // ✅ DOB
   doc.text(data.pDob || "", 25, 47);
 
-  // ✅ Photo — Upload Image box ke andar
+  // ✅ Photo
   if (data.pPhoto) {
     try {
       doc.addImage(data.pPhoto, "JPEG", 4.5, 18, 16, 20);
     } catch (e) {}
   }
 
-  // ✅ Signature — हस्ताक्षर ke upar
+  // ✅ Signature
   if (data.pSign) {
     try {
-      doc.addImage(data.pSign, "JPEG", 28, 44, 22, 7);
+      doc.addImage(data.pSign, "PNG", 28, 44, 22, 7);
     } catch (e) {}
   }
 
