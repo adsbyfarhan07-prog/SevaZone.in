@@ -1,6 +1,6 @@
 // panPdf.ts
 import jsPDF from "jspdf";
-import panTemplate from "../../assets/templates/pan.png";
+const panTemplate = "/assets/templates/pan.png";
 
 export const downloadPanTemplatePDF = (data: {
   pNo: string;
