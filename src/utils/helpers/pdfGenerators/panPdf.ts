@@ -18,10 +18,10 @@ export const downloadPanTemplatePDF = (data: {
 
   const W = 85.6;
 
-  // ✅ Background Template
+  // ✅ Background — pan.png
   doc.addImage(panTemplate, "PNG", 0, 0, W, 54);
 
-  // ✅ PAN Number
+  // ✅ PAN Number — center mein heading ke neeche
   doc.setFont("helvetica", "bold");
   doc.setFontSize(9);
   doc.setTextColor(20, 20, 100);
