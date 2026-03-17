@@ -34,8 +34,10 @@ export const PanManualForm: React.FC<Props> = ({
         {backBtn(() => setActiveSubMenu(null))}
         <h2 style={{ color: theme.text, fontWeight: 900, fontSize: 20 }}>🖨️ Pan Manual</h2>
       </div>
+
       <div style={{ background: theme.statBg, borderRadius: 16, padding: 24, maxWidth: 700 }}>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", gap: 14, marginBottom: 14 }}>
+          
           <div>
             <div style={{ color: theme.subtext, fontSize: 12, fontWeight: 700, marginBottom: 6 }}>Pan No.</div>
             <input
@@ -46,6 +48,7 @@ export const PanManualForm: React.FC<Props> = ({
               placeholder="Pan Number"
             />
           </div>
+
           <div>
             <div style={{ color: theme.subtext, fontSize: 12, fontWeight: 700, marginBottom: 6 }}>Name</div>
             <input
@@ -55,6 +58,7 @@ export const PanManualForm: React.FC<Props> = ({
               placeholder="Full Name"
             />
           </div>
+
           <div>
             <div style={{ color: theme.subtext, fontSize: 12, fontWeight: 700, marginBottom: 6 }}>Father Name</div>
             <input
@@ -64,6 +68,7 @@ export const PanManualForm: React.FC<Props> = ({
               placeholder="Father Name"
             />
           </div>
+
           <div>
             <div style={{ color: theme.subtext, fontSize: 12, fontWeight: 700, marginBottom: 6 }}>Date Of Birth</div>
             <input
@@ -73,8 +78,11 @@ export const PanManualForm: React.FC<Props> = ({
               style={{ width: "100%", background: theme.inputBg, border: `1.5px solid ${theme.inputBorder}`, borderRadius: 10, padding: "10px 12px", color: theme.text, fontSize: 13, outline: "none" }}
             />
           </div>
+
         </div>
+
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 14, marginBottom: 20 }}>
+          
           <div>
             <div style={{ color: theme.subtext, fontSize: 12, fontWeight: 700, marginBottom: 6 }}>Gender</div>
             <select
@@ -88,6 +96,7 @@ export const PanManualForm: React.FC<Props> = ({
               <option>Other</option>
             </select>
           </div>
+
           <div>
             <div style={{ color: theme.subtext, fontSize: 12, fontWeight: 700, marginBottom: 6 }}>Photo</div>
             <label style={{ display: "flex", alignItems: "center", gap: 8, background: `rgba(0,201,167,0.08)`, border: `1.5px dashed #00C9A7`, borderRadius: 10, padding: "9px 12px", cursor: "pointer" }}>
@@ -104,15 +113,26 @@ export const PanManualForm: React.FC<Props> = ({
               />
             </label>
           </div>
+
           <div>
             <div style={{ color: theme.subtext, fontSize: 12, fontWeight: 700, marginBottom: 6 }}>Signature</div>
             <div style={{ border: "1.5px solid #845EC2", borderRadius: 10, background: "rgba(132,94,194,0.06)", padding: 8 }}>
+              
               <div style={{ fontSize: 11, color: "#845EC2", fontWeight: 700, marginBottom: 4 }}>✍️ Draw Signature Below</div>
+
               <canvas
                 id="signCanvas"
                 width={200}
                 height={60}
-                style={{ display: "block", background: "white", borderRadius: 6, cursor: "crosshair", border: "1px solid rgba(132,94,194,0.3)" }}
+                style={{
+                  display: "block",
+                  background: "white",
+                  borderRadius: 6,
+                  cursor: "crosshair",
+                  border: "1px solid rgba(132,94,194,0.3)",
+                  touchAction: "none"
+                }}
+
                 onMouseDown={(e) => {
                   const canvas = e.currentTarget;
                   const ctx = canvas.getContext("2d");
@@ -124,6 +144,7 @@ export const PanManualForm: React.FC<Props> = ({
                   ctx!.beginPath();
                   ctx!.moveTo(e.clientX - rect.left, e.clientY - rect.top);
                 }}
+
                 onMouseMove={(e) => {
                   const canvas = e.currentTarget;
                   if (!(canvas as any)._drawing) return;
@@ -132,11 +153,13 @@ export const PanManualForm: React.FC<Props> = ({
                   ctx!.lineTo(e.clientX - rect.left, e.clientY - rect.top);
                   ctx!.stroke();
                 }}
+
                 onMouseUp={(e) => {
                   const canvas = e.currentTarget;
                   (canvas as any)._drawing = false;
                   setPSign(canvas.toDataURL());
                 }}
+
                 onMouseLeave={(e) => {
                   const canvas = e.currentTarget;
                   if ((canvas as any)._drawing) {
@@ -144,6 +167,7 @@ export const PanManualForm: React.FC<Props> = ({
                     setPSign(canvas.toDataURL());
                   }
                 }}
+
                 onTouchStart={(e) => {
                   e.preventDefault();
                   const canvas = e.currentTarget;
@@ -157,6 +181,7 @@ export const PanManualForm: React.FC<Props> = ({
                   ctx!.beginPath();
                   ctx!.moveTo(touch.clientX - rect.left, touch.clientY - rect.top);
                 }}
+
                 onTouchMove={(e) => {
                   e.preventDefault();
                   const canvas = e.currentTarget;
@@ -167,12 +192,15 @@ export const PanManualForm: React.FC<Props> = ({
                   ctx!.lineTo(touch.clientX - rect.left, touch.clientY - rect.top);
                   ctx!.stroke();
                 }}
+
                 onTouchEnd={(e) => {
+                  e.preventDefault();
                   const canvas = e.currentTarget;
                   (canvas as any)._drawing = false;
                   setPSign(canvas.toDataURL());
                 }}
               />
+
               <div style={{ display: "flex", gap: 6, marginTop: 6 }}>
                 <button
                   type="button"
@@ -186,6 +214,7 @@ export const PanManualForm: React.FC<Props> = ({
                 >
                   🗑 Clear
                 </button>
+
                 <button
                   type="button"
                   onClick={() => {
@@ -197,9 +226,11 @@ export const PanManualForm: React.FC<Props> = ({
                   {pSign ? "✅ Saved" : "💾 Save"}
                 </button>
               </div>
+
             </div>
           </div>
         </div>
+
         <button
           className="submit-btn"
           style={{ maxWidth: 240, background: "linear-gradient(135deg,#f59e0b,#d97706)" }}
@@ -207,6 +238,7 @@ export const PanManualForm: React.FC<Props> = ({
         >
           💳 Pay ₹30 & Download PDF
         </button>
+
       </div>
     </div>
   );
