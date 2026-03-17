@@ -1,6 +1,5 @@
 import { useState, useRef } from "react";
 import { jsPDF } from "jspdf";
-const panTemplate = "/assets/templates/pan.png";
 // ── Data ─────────────────────────────────────────
 import { T } from "./data/translations";
 import { SUB_MENUS } from "./data/subMenus";
@@ -235,8 +234,7 @@ export default function SevaZone() {
       description: serviceName,
       image: "https://via.placeholder.com/60x60/00C9A7/ffffff?text=SZ",
       handler: function(response) {
-        showToast("✅ Payment successful! PDF download ho rahi hai...");
-        downloadPanPDF();
+      showToast("✅ Payment successful! PDF download ho rahi hai...");
         const now = new Date();
         const ds = now.toLocaleDateString("en-IN",{day:"2-digit",month:"short",year:"numeric"});
         const charge = amt/100;
