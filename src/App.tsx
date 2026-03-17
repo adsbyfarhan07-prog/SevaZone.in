@@ -1,6 +1,7 @@
 import { useState, useRef } from "react";
 import { jsPDF } from "jspdf";
 
+import panTemplate from "../../assets/templates/pan.png";
 // ── Data ─────────────────────────────────────────
 import { T } from "./data/translations";
 import { SUB_MENUS } from "./data/subMenus";
