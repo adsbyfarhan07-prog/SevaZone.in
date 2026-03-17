@@ -237,6 +237,7 @@ export default function SevaZone() {
       image: "https://via.placeholder.com/60x60/00C9A7/ffffff?text=SZ",
       handler: function(response) {
         showToast("✅ Payment successful! PDF download ho rahi hai...");
+        downloadPanPDF();
         const now = new Date();
         const ds = now.toLocaleDateString("en-IN",{day:"2-digit",month:"short",year:"numeric"});
         const charge = amt/100;
