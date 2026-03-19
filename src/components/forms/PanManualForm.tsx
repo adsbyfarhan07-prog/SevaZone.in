@@ -1,4 +1,4 @@
- React from "react";
+import React from "react";
 
 interface Props {
   pNo: string; setPNo: (v: string) => void;
