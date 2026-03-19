@@ -42,7 +42,7 @@ export const downloadPanTemplatePDF = async (data: {
   const W = 85.6;
   const H = 54;
 
-  // Background Template
+  // Background Template (clean - no white border)
   try {
     const base64 = await loadImageAsBase64("/assets/templates/pan.png");
     doc.addImage(base64, "PNG", 0, 0, W, H);
@@ -53,7 +53,7 @@ export const downloadPanTemplatePDF = async (data: {
   // User Photo - inside dashed box
   if (data.pPhoto) {
     try {
-      doc.addImage(data.pPhoto, "JPEG", 4.7, 10.8, 19.2, 23.2);
+      doc.addImage(data.pPhoto, "JPEG", 4.7, 11.8, 17.5, 27.5);
     } catch (e) {}
   }
 
@@ -61,27 +61,26 @@ export const downloadPanTemplatePDF = async (data: {
   doc.setFont("helvetica", "bold");
   doc.setFontSize(7);
   doc.setTextColor(20, 20, 100);
-  doc.text(data.pNo || "", W / 2, 26, { align: "center" });
+  doc.text(data.pNo || "", W / 2, 23.8, { align: "center" });
 
   // Name - below naam label
   doc.setFontSize(6);
   doc.setFont("helvetica", "bold");
   doc.setTextColor(20, 20, 80);
-  doc.text(data.pName || "", 4.7, 37.4);
+  doc.text(data.pName || "", 4.7, 36.2);
 
-  // Father Name - below pita ka naam label
-  doc.text(data.pFather || "", 4.7, 42.5);
+  // Father Name
+  doc.text(data.pFather || "", 4.7, 41.0);
 
-  // DOB - below janm tithi label - formatted DD/MM/YYYY
-  doc.text(formatDate(data.pDob), 4.7, 48.5);
+  // DOB - formatted DD/MM/YYYY
+  doc.text(formatDate(data.pDob), 4.7, 46.2);
 
   // Signature - above hastakshar label
   if (data.pSign) {
     try {
-      doc.addImage(data.pSign, "PNG", 28, 44, 18, 6);
+      doc.addImage(data.pSign, "PNG", 36.8, 43, 18, 6);
     } catch (e) {}
   }
 
   doc.save(`pan_${data.pNo || "card"}.pdf`);
 };
-                      
