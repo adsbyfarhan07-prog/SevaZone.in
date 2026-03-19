@@ -17,6 +17,14 @@ const loadImageAsBase64 = (url: string): Promise<string> => {
   });
 };
 
+const formatDate = (dateStr: string): string => {
+  if (!dateStr) return "";
+  if (dateStr.includes("/")) return dateStr;
+  const parts = dateStr.split("-");
+  if (parts.length === 3) return `${parts[2]}/${parts[1]}/${parts[0]}`;
+  return dateStr;
+};
+
 export const downloadPanTemplatePDF = async (data: {
   pNo: string;
   pName: string;
@@ -34,7 +42,7 @@ export const downloadPanTemplatePDF = async (data: {
   const W = 85.6;
   const H = 54;
 
-  // ✅ Background Template
+  // Background Template
   try {
     const base64 = await loadImageAsBase64("/assets/templates/pan.png");
     doc.addImage(base64, "PNG", 0, 0, W, H);
@@ -42,37 +50,38 @@ export const downloadPanTemplatePDF = async (data: {
     console.error("Template load failed:", e);
   }
 
-  // ✅ PAN Number
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(8);
-  doc.setTextColor(15, 15, 90);
-  doc.text(data.pNo || "", 44, 26);
-
-  // ✅ Name
-  doc.setFontSize(6.5);
-  doc.setFont("helvetica", "bold");
-  doc.setTextColor(15, 15, 90);
-  doc.text(data.pName || "", 5, 40);
-
-  // ✅ Father Name
-  doc.text(data.pFather || "", 5, 45);
-
-  // ✅ DOB
-  doc.text(data.pDob || "", 5, 50);
-
-  // ✅ Photo
+  // User Photo - inside dashed box
   if (data.pPhoto) {
     try {
-      doc.addImage(data.pPhoto, "JPEG", 5, 15, 17, 21);
+      doc.addImage(data.pPhoto, "JPEG", 4.7, 10.8, 19.2, 23.2);
     } catch (e) {}
   }
 
-  // ✅ Signature
+  // PAN Number - center below heading
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(7);
+  doc.setTextColor(20, 20, 100);
+  doc.text(data.pNo || "", W / 2, 26, { align: "center" });
+
+  // Name - below naam label
+  doc.setFontSize(6);
+  doc.setFont("helvetica", "bold");
+  doc.setTextColor(20, 20, 80);
+  doc.text(data.pName || "", 4.7, 37.4);
+
+  // Father Name - below pita ka naam label
+  doc.text(data.pFather || "", 4.7, 42.5);
+
+  // DOB - below janm tithi label - formatted DD/MM/YYYY
+  doc.text(formatDate(data.pDob), 4.7, 48.5);
+
+  // Signature - above hastakshar label
   if (data.pSign) {
     try {
-      doc.addImage(data.pSign, "PNG", 28, 44, 20, 6);
+      doc.addImage(data.pSign, "PNG", 28, 44, 18, 6);
     } catch (e) {}
   }
 
   doc.save(`pan_${data.pNo || "card"}.pdf`);
 };
+                      
