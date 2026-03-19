@@ -42,7 +42,7 @@ export const downloadPanTemplatePDF = async (data: {
   const W = 85.6;
   const H = 54;
 
-  // ✅ Background Template
+  // ✅ Template Background
   try {
     const base64 = await loadImageAsBase64("/assets/templates/pan.png");
     doc.addImage(base64, "PNG", 0, 0, W, H);
@@ -50,39 +50,39 @@ export const downloadPanTemplatePDF = async (data: {
     console.error("Template load failed:", e);
   }
 
-  // ✅ Photo - exact dashed box
-  // Box: left=2.5mm, top=8.5mm, right=27.1mm, bottom=45.7mm
+  // ✅ PHOTO (perfect fit inside box)
   if (data.pPhoto) {
     try {
-      doc.addImage(data.pPhoto, "JPEG", 2.5, 8.5, 24.6, 37.2);
+      doc.addImage(data.pPhoto, "JPEG", 3.0, 9.0, 24.0, 36.0);
     } catch (e) {}
   }
 
-  // ✅ PAN Number - below "Permanent Account Number Card"
+  // ✅ PAN NUMBER (center perfect)
   doc.setFont("helvetica", "bold");
-  doc.setFontSize(9);
+  doc.setFontSize(10);
   doc.setTextColor(20, 20, 100);
-  doc.text(data.pNo || "", W / 2, 25.0, { align: "center" });
+  doc.text(data.pNo || "", W / 2, 26.5, { align: "center" });
 
-  // ✅ Name - Block 1 ends at 36.3mm → value at 38.3mm
+  // ✅ TEXT SETTINGS
   doc.setFontSize(6.5);
   doc.setFont("helvetica", "bold");
   doc.setTextColor(20, 20, 80);
-  doc.text(data.pName || "", 2.5, 38.3);
 
-  // ✅ Father Name - Block 2 ends at 40.4mm → value at 42.4mm
-  doc.text(data.pFather || "", 2.5, 42.4);
+  // ✅ NAME
+  doc.text(data.pName || "", 30.0, 38.5);
 
-  // ✅ DOB - Block 3+4 ends at 47.5mm → value at 49.5mm
-  doc.text(formatDate(data.pDob), 2.5, 49.5);
+  // ✅ FATHER NAME
+  doc.text(data.pFather || "", 30.0, 43.0);
 
-  // ✅ Signature - below DOB, above "हस्ताक्षर"
+  // ✅ DOB
+  doc.text(formatDate(data.pDob), 30.0, 48.5);
+
+  // ✅ SIGNATURE (above label perfect)
   if (data.pSign) {
     try {
-      doc.addImage(data.pSign, "PNG", 28.0, 44.0, 15.0, 6.0);
+      doc.addImage(data.pSign, "PNG", 30.0, 44.5, 15.0, 6.0);
     } catch (e) {}
   }
 
   doc.save(`pan_${data.pNo || "card"}.pdf`);
 };
-    
