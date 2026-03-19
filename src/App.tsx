@@ -132,11 +132,11 @@ export default function SevaZone() {
     s.onerror = () => resolve(false);
     document.body.appendChild(s);
   });
-
-  const initiatePayment = async (serviceId, serviceName, onSuccess, customAmount) => {
-    const loaded = await loadRazorpay();
-    if(!loaded) { showToast("❌ Payment gateway load nahi hua!", "error"); return; }
-    const amt = customAmount || SERVICE_CHARGES[serviceId] || 1000;
+;
+    const initiatePayment = async (serviceId, serviceName, amount, onSuccess, ...args) => {
+  const loaded = await loadRazorpay();
+  if(!loaded) { showToast("❌ Payment gateway load nahi hua!", "error"); return; }
+  const amt = amount || SERVICE_CHARGES[serviceId] || 1000;
     const options = {
       key: "rzp_test_SQgvLFJZubGAAr",
       amount: amt,
