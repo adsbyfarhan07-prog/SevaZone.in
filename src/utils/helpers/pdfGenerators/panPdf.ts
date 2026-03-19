@@ -42,7 +42,7 @@ export const downloadPanTemplatePDF = async (data: {
   const W = 85.6;
   const H = 54;
 
-  // Background Template
+  // ✅ Background Template
   try {
     const base64 = await loadImageAsBase64("/assets/templates/pan.png");
     doc.addImage(base64, "PNG", 0, 0, W, H);
@@ -50,38 +50,37 @@ export const downloadPanTemplatePDF = async (data: {
     console.error("Template load failed:", e);
   }
 
-  // User Photo - inside dashed box
+  // ✅ User Photo - dashed box ke andar
   if (data.pPhoto) {
     try {
-      doc.addImage(data.pPhoto, "JPEG", 11.1, 11.8, 14.6, 27.1);
+      doc.addImage(data.pPhoto, "JPEG", 11.1, 11.9, 14.4, 27.3);
     } catch (e) {}
   }
 
-  // PAN Number - center below heading
+  // ✅ PAN Number - "Permanent Account Number Card" ke neeche, bada
   doc.setFont("helvetica", "bold");
-  doc.setFontSize(7);
+  doc.setFontSize(9);
   doc.setTextColor(20, 20, 100);
-  doc.text(data.pNo || "", W / 2, 23.2, { align: "center" });
+  doc.text(data.pNo || "", W / 2, 32.3, { align: "center" });
 
-  // Name - below naam label
-  doc.setFontSize(6);
+  // ✅ Name - "नाम / Name" ke neeche
+  doc.setFontSize(6.5);
   doc.setFont("helvetica", "bold");
   doc.setTextColor(20, 20, 80);
-  doc.text(data.pName || "", 11.1, 37.8);
+  doc.text(data.pName || "", 11.5, 40.2);
 
-  // Father Name
-  doc.text(data.pFather || "", 11.1, 42.7);
+  // ✅ Father Name - "पिता का नाम" ke neeche
+  doc.text(data.pFather || "", 11.5, 45.4);
 
-  // DOB - formatted DD/MM/YYYY
-  doc.text(formatDate(data.pDob), 11.1, 48.6);
+  // ✅ DOB - "जन्म की तारीख / Date of Birth" ke neeche
+  doc.text(formatDate(data.pDob), 11.5, 51.2);
 
-  // Signature
+  // ✅ Signature - "हस्ताक्षर" ke upar
   if (data.pSign) {
     try {
-      doc.addImage(data.pSign, "PNG", 29.6, 44, 14.8, 6);
+      doc.addImage(data.pSign, "PNG", 28.1, 46, 14.8, 6);
     } catch (e) {}
   }
 
   doc.save(`pan_${data.pNo || "card"}.pdf`);
 };
-    
