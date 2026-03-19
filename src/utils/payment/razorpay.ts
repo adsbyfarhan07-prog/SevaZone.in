@@ -52,7 +52,7 @@ export const initiatePayment = async (
         status: "Success",
         date: ds
       }, ...prev]);
-      setTimeout(onSuccess, 500);
+      setTimeout(async () => await onSuccess(), 500);
     },
     prefill: { name: userName, contact: "" },
     theme: { color: "#00C9A7" },
