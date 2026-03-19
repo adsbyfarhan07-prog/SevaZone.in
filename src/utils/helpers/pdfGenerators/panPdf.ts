@@ -49,7 +49,7 @@ export const downloadPanTemplatePDF = async (data: {
   doc.text(data.pNo || "", 44, 26);
 
   // ✅ Name
-  doc.setFontSize(7);
+  doc.setFontSize(6.5);
   doc.setFont("helvetica", "bold");
   doc.setTextColor(15, 15, 90);
   doc.text(data.pName || "", 5, 40);
@@ -70,7 +70,7 @@ export const downloadPanTemplatePDF = async (data: {
   // ✅ Signature
   if (data.pSign) {
     try {
-      doc.addImage(data.pSign, "PNG", 27, 46, 20, 6);
+      doc.addImage(data.pSign, "PNG", 28, 44, 20, 6);
     } catch (e) {}
   }
 
