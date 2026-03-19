@@ -50,37 +50,39 @@ export const downloadPanTemplatePDF = async (data: {
     console.error("Template load failed:", e);
   }
 
-  // ✅ User Photo - dashed box ke andar
+  // ✅ Photo - exact dashed box
+  // Box: left=2.5mm, top=8.5mm, right=27.1mm, bottom=45.7mm
   if (data.pPhoto) {
     try {
-      doc.addImage(data.pPhoto, "JPEG", 11.1, 11.9, 14.4, 27.3);
+      doc.addImage(data.pPhoto, "JPEG", 2.5, 8.5, 24.6, 37.2);
     } catch (e) {}
   }
 
-  // ✅ PAN Number - "Permanent Account Number Card" ke neeche, bada
+  // ✅ PAN Number - below "Permanent Account Number Card"
   doc.setFont("helvetica", "bold");
   doc.setFontSize(9);
   doc.setTextColor(20, 20, 100);
-  doc.text(data.pNo || "", W / 2, 32.3, { align: "center" });
+  doc.text(data.pNo || "", W / 2, 25.0, { align: "center" });
 
-  // ✅ Name - "नाम / Name" ke neeche
+  // ✅ Name - Block 1 ends at 36.3mm → value at 38.3mm
   doc.setFontSize(6.5);
   doc.setFont("helvetica", "bold");
   doc.setTextColor(20, 20, 80);
-  doc.text(data.pName || "", 11.5, 40.2);
+  doc.text(data.pName || "", 2.5, 38.3);
 
-  // ✅ Father Name - "पिता का नाम" ke neeche
-  doc.text(data.pFather || "", 11.5, 45.4);
+  // ✅ Father Name - Block 2 ends at 40.4mm → value at 42.4mm
+  doc.text(data.pFather || "", 2.5, 42.4);
 
-  // ✅ DOB - "जन्म की तारीख / Date of Birth" ke neeche
-  doc.text(formatDate(data.pDob), 11.5, 51.2);
+  // ✅ DOB - Block 3+4 ends at 47.5mm → value at 49.5mm
+  doc.text(formatDate(data.pDob), 2.5, 49.5);
 
-  // ✅ Signature - "हस्ताक्षर" ke upar
+  // ✅ Signature - below DOB, above "हस्ताक्षर"
   if (data.pSign) {
     try {
-      doc.addImage(data.pSign, "PNG", 28.1, 46, 14.8, 6);
+      doc.addImage(data.pSign, "PNG", 28.0, 44.0, 15.0, 6.0);
     } catch (e) {}
   }
 
   doc.save(`pan_${data.pNo || "card"}.pdf`);
 };
+    
